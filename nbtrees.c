@@ -1,4 +1,4 @@
-#include "nbtrees.h"
+                                                                    #include "nbtrees.h"
 #include <stdio.h>
 #include <malloc.h>
 
@@ -128,42 +128,49 @@ void Level_order(Isi_Tree X, int Maks_node){
 }
 
 void PrintTree(Isi_Tree P) {
-    int level = 0;
-    int Pcur = 1;  // Mulai dari root
+    if (P[1].info == nil) {
+        printf("Tree kosong.\n");
+        return;
+    }
 
-    while (Pcur != nil) {
-        // Cetak indentasi berdasarkan level
-        for (int i = 0; i < level; i++) {
-            printf("   ");
-        }
-        printf("%c\n", P[Pcur].info);
+    int stack[jml_maks];     // Menyimpan indeks node
+    int level[jml_maks];     // Menyimpan kedalaman node
+    int top = -1;
 
-        // Jika ada anak pertama
-        if (P[Pcur].ps_fs != nil) {
-            for (int i = 0; i < level; i++) {
-                printf("   ");
-            }
-            printf("/\n");
+    stack[++top] = 1;
+    level[1] = 0;
 
-            Pcur = P[Pcur].ps_fs;
-            level++;
+    while (top >= 0) {
+        int curr = stack[top--];
+        int currLevel = level[curr];
+
+        // Cetak indentasi
+        for (int i = 0; i < currLevel; i++) {
+            printf("|   ");
         }
-        // Jika ada saudara (next sibling)
-        else if (P[Pcur].ps_nb != nil) {
-            Pcur = P[Pcur].ps_nb;
+
+        // Cetak node
+        printf("+-- %c\n", P[curr].info);
+
+        // Simpan anak-anak
+        int children[jml_maks];
+        int childCount = 0;
+        int child = P[curr].ps_fs;
+
+        while (child != nil) {
+            children[childCount++] = child;
+            child = P[child].ps_nb;
         }
-        // Jika tidak ada anak maupun saudara
-        else {
-            while (Pcur != nil && P[Pcur].ps_nb == nil) {
-                Pcur = P[Pcur].ps_pr;
-                level--;
-            }
-            if (Pcur != nil) {
-                Pcur = P[Pcur].ps_nb;
-            }
+
+        // Masukkan ke stack secara terbalik (kanan ke kiri)
+        for (int i = childCount - 1; i >= 0; i--) {
+            stack[++top] = children[i];
+            level[children[i]] = currLevel + 1;
         }
     }
 }
+
+
 
 
 boolean Search (Isi_Tree P, infotype X){
@@ -210,7 +217,7 @@ int nbDaun (Isi_Tree P){
                 Pcur = P[Pcur].ps_nb;
                 resmi = false;
             } else {
-                Pcur = P[Pcur].ps_nb;
+                Pcur = P[Pcur].ps_nb;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                 resmi = true;
             }
         }
